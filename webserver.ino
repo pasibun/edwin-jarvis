@@ -1,7 +1,7 @@
 WiFiServer server(80);
 
-const char* ssid = "Routertje";
-const char* password = "aweds123";
+const char* ssid = "Top Secret";
+const char* password = "Heul-erg-geheim-wachtwoord";
 
 void initWebserver() {
   // Connect to WiFi network
