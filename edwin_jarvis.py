@@ -10,4 +10,4 @@ if __name__ == "__main__":
     steps = motor.SPR * 4
     direction = motor.CW
     delay = .005 / 32
-    steppermotor.moving(300, steppermotor.stepper_motor_base, direction, delay)
+    steppermotor.moving(300, motor.DIR, motor.STEP, direction, delay)

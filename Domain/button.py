@@ -1,4 +1,4 @@
-class StopSwitchButton(object):
+class Button(object):
     NAME = ''
     PIN = 0
 
