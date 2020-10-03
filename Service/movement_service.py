@@ -12,12 +12,12 @@ class MovementService(object):
 
     def __init__(self):
         print("init movement service")
-        self.init_stepper_motors()
+        GPIO.setmode(GPIO.BOARD)
+        # GPIO.setwarnings(False)
+        # self.init_stepper_motors()
         self.init_base_stop_btn()
 
     def init_stepper_motors(self):
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
         GPIO.setup(self.stepper_motor_base.DIR, GPIO.OUT)
         GPIO.setup(self.stepper_motor_base.STEP, GPIO.OUT)
         GPIO.output(self.stepper_motor_base.DIR, self.stepper_motor_base.CW)
