@@ -14,13 +14,12 @@ class MovementService(object):
         print("init movement service")
         GPIO.setmode(GPIO.BOARD)
         # GPIO.setwarnings(False)
-        # self.init_stepper_motors()
+        self.init_stepper_motors()
         self.init_base_stop_btn()
 
     def init_stepper_motors(self):
         GPIO.setup(self.stepper_motor_base.DIR, GPIO.OUT)
         GPIO.setup(self.stepper_motor_base.STEP, GPIO.OUT)
-        GPIO.output(self.stepper_motor_base.DIR, self.stepper_motor_base.CW)
 
     def init_base_stop_btn(self):
         GPIO.setup(self.base_stop_btn_left.PIN, GPIO.IN)
@@ -34,13 +33,8 @@ class MovementService(object):
             GPIO.output(step_pin, GPIO.LOW)
             sleep(speed)
             if self.base_stop_switch_check():
+                print("Stop switch has been pressed!")
                 break
 
     def base_stop_switch_check(self):
-        while True:
-            print('left: ')
-            print(GPIO.input(self.base_stop_btn_left.PIN))
-            print('right: ')
-            print(GPIO.input(self.base_stop_btn_right.PIN))
-            sleep(1)
         return GPIO.input(self.base_stop_btn_left.PIN) == 1 or GPIO.input(self.base_stop_btn_right.PIN) == 1
