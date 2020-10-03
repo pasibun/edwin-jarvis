@@ -6,11 +6,11 @@ import logging
 
 def m():
     steppermotor = MovementService()
-    motor = steppermotor.stepper_motor_base
-    steps = motor.SPR * 4
+    motor = steppermotor.stepper_motor_first_axis
+    steps = 500
     direction = motor.CW
-    delay = .005 / 32
-    steppermotor.moving(motor.DIR, motor.STEP, steps, direction, delay)
+    speed = 0.1
+    steppermotor.moving(motor.DIR, motor.STEP, steps, direction, speed)
 
 
 def n():
@@ -18,6 +18,9 @@ def n():
     while True:
         controlboardservice.what_button_is_pressed()
 
+def clean_up():
+    print("Exiting program.")
+    GPIO.cleanup()
 
 if __name__ == "__main__":
     try:
@@ -26,6 +29,6 @@ if __name__ == "__main__":
         GPIO.setmode(GPIO.BOARD)
         # GPIO.setwarnings(False)
         m()
+        clean_up()
     except KeyboardInterrupt:
-        print("Exiting program.")
-        GPIO.cleanup()
+        clean_up()

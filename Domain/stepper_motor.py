@@ -4,6 +4,7 @@ class StepperMotor(object):
     CW = 1  # Clockwise Rotation
     CCW = 0  # Counterclockwise Rotation
     SPR = 200  # Steps per Revolution (360 / 1.8)
+    current_step = 0
 
     def __init__(self, dir, step):
         self.DIR = dir
