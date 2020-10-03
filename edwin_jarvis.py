@@ -23,6 +23,8 @@ if __name__ == "__main__":
     try:
         logging.basicConfig(filename='logging.log', level=logging.INFO, format='%(asctime)s %(message)s')
         logging.info("Starting application. Saving logs in ~/logging.log")
+        GPIO.setmode(GPIO.BOARD)
+        # GPIO.setwarnings(False)
         n()
     except KeyboardInterrupt:
         print("Exiting program.")

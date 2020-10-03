@@ -12,8 +12,6 @@ class MovementService(object):
 
     def __init__(self):
         print("init movement service")
-        GPIO.setmode(GPIO.BOARD)
-        # GPIO.setwarnings(False)
         self.init_stepper_motors()
         self.init_base_stop_btn()
 
