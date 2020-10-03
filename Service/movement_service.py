@@ -35,4 +35,4 @@ class MovementService(object):
                 break
 
     def base_stop_switch_check(self):
-        return GPIO.input(self.base_stop_btn_left.PIN) == 1 or GPIO.input(self.base_stop_btn_right.PIN) == 1
+        return GPIO.input(self.base_stop_btn_left.PIN) or GPIO.input(self.base_stop_btn_right.PIN)

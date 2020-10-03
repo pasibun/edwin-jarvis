@@ -19,16 +19,16 @@ class ControlBoardService(object):
         GPIO.setup(self.first_axis_right.PIN, GPIO.IN)
 
     def what_button_is_pressed(self):
-        if GPIO.input(self.base_left.PIN) == 1:
+        if GPIO.input(self.base_left.PIN):
             print("Base left has been pressed")
             return self.base_left, True
-        if GPIO.input(self.base_right.PIN) == 1:
-            print("Base right has been pressed")
-            return self.base_right, True
-        if GPIO.input(self.first_axis_left.PIN) == 1:
-            print("First axis left has been pressed")
-            return self.first_axis_left, True
-        if GPIO.input(self.first_axis_right.PIN) == 1:
-            print("First axis right has been pressed")
-            return self.first_axis_right, True
+        # if GPIO.input(self.base_right.PIN):
+        #     print("Base right has been pressed")
+        #     return self.base_right, True
+        # if GPIO.input(self.first_axis_left.PIN):
+        #     print("First axis left has been pressed")
+        #     return self.first_axis_left, True
+        # if GPIO.input(self.first_axis_right.PIN):
+        #     print("First axis right has been pressed")
+        #     return self.first_axis_right, True
 
