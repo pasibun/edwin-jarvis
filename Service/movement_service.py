@@ -11,7 +11,7 @@ class MovementService(object):
     base_stop_btn_right = Button(29, 'BaseStopRight')  # GPIO5
 
     def __init__(self):
-        print("init movementService")
+        print("init movement service")
         self.init_stepper_motors()
         self.init_base_stop_btn()
 
@@ -37,4 +37,10 @@ class MovementService(object):
                 break
 
     def base_stop_switch_check(self):
+        while True:
+            print('left: ')
+            print(GPIO.input(self.base_stop_btn_left.PIN))
+            print('right: ')
+            print(GPIO.input(self.base_stop_btn_right.PIN))
+            sleep(1)
         return GPIO.input(self.base_stop_btn_left.PIN) == 1 or GPIO.input(self.base_stop_btn_right.PIN) == 1
