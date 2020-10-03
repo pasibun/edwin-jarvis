@@ -25,7 +25,7 @@ if __name__ == "__main__":
         logging.info("Starting application. Saving logs in ~/logging.log")
         GPIO.setmode(GPIO.BOARD)
         # GPIO.setwarnings(False)
-        n()
+        m()
     except KeyboardInterrupt:
         print("Exiting program.")
         GPIO.cleanup()
