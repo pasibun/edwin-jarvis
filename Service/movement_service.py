@@ -5,7 +5,7 @@ from Domain.button import Button
 
 
 class MovementService(object):
-    # stepper_motor_base = StepperMotor(40, 38)  # GPIO21/GPIO20
+    stepper_motor_base = StepperMotor(40, 38)  # GPIO21/GPIO20
     stepper_motor_first_axis = StepperMotor(40, 38)  # GPIO21/GPIO20
 
     base_stop_btn_left = Button(23, 'BaseStopLeft')  # GPIO11

@@ -1,26 +1,39 @@
 import RPi.GPIO as GPIO
+
+from Domain.control_buttons import ControlButton
 from Service.control_board_service import ControlBoardService
 from Service.movement_service import MovementService
 import logging
 
 
-def m():
-    steppermotor = MovementService()
-    motor = steppermotor.stepper_motor_first_axis
+def starting_control_board():
+    global motor
+    control_board_service = ControlBoardService()
+    stepper_motor = MovementService()
     steps = 500
-    direction = motor.CW
     speed = 0.1
-    steppermotor.moving(motor.DIR, motor.STEP, steps, direction, speed)
-
-
-def n():
-    controlboardservice = ControlBoardService()
+    direction = 1
     while True:
-        controlboardservice.what_button_is_pressed()
+        result = control_board_service.what_button_is_pressed()
+        if list(result.keys())[0] == ControlButton.FIRST_AXIS_LEFT:
+            motor = stepper_motor.stepper_motor_first_axis
+            direction = motor.CCW
+        if list(result.keys())[0] == ControlButton.FIRST_AXIS_RIGHT:
+            motor = stepper_motor.stepper_motor_first_axis
+            direction = motor.CW
+        if list(result.keys())[0] == ControlButton.BASE_LEFT:
+            motor = stepper_motor.stepper_motor_base
+            direction = motor.CCW
+        if list(result.keys())[0] == ControlButton.BASE_RIGHT:
+            motor = stepper_motor.stepper_motor_base
+            direction = motor.CW
+        stepper_motor.moving(motor.DIR, motor.STEP, steps, direction, speed)
+
 
 def clean_up():
     print("Exiting program.")
     GPIO.cleanup()
+
 
 if __name__ == "__main__":
     try:
@@ -28,7 +41,7 @@ if __name__ == "__main__":
         logging.info("Starting application. Saving logs in ~/logging.log")
         GPIO.setmode(GPIO.BOARD)
         # GPIO.setwarnings(False)
-        m()
+        starting_control_board()
         clean_up()
     except KeyboardInterrupt:
         clean_up()

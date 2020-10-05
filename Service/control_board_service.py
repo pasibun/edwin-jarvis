@@ -1,6 +1,8 @@
 from Domain.button import Button
 import RPi.GPIO as GPIO
 
+from Domain.control_buttons import ControlButton
+
 
 class ControlBoardService(object):
     base_left = Button(37, 'baseLeft')  # GPIO26
@@ -21,13 +23,13 @@ class ControlBoardService(object):
     def what_button_is_pressed(self):
         if GPIO.input(self.base_left.PIN):
             print("Base left has been pressed")
-            return self.base_left, True
+            return ControlButton.BASE_LEFT, True
         if GPIO.input(self.base_right.PIN):
             print("Base right has been pressed")
-            return self.base_right, True
+            return ControlButton.BASE_RIGHT, True
         if GPIO.input(self.first_axis_left.PIN):
             print("First axis left has been pressed")
-            return self.first_axis_left, True
+            return ControlButton.FIRST_AXIS_LEFT, True
         if GPIO.input(self.first_axis_right.PIN):
             print("First axis right has been pressed")
-            return self.first_axis_right, True
+            return ControlButton.FIRST_AXIS_RIGHT, True
