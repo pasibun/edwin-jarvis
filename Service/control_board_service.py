@@ -24,12 +24,14 @@ class ControlBoardService(object):
         if GPIO.input(self.base_left.PIN):
             print("Base left has been pressed")
             return ControlButton.BASE_LEFT, True
-        if GPIO.input(self.base_right.PIN):
+        elif GPIO.input(self.base_right.PIN):
             print("Base right has been pressed")
             return ControlButton.BASE_RIGHT, True
-        if GPIO.input(self.first_axis_left.PIN):
+        elif GPIO.input(self.first_axis_left.PIN):
             print("First axis left has been pressed")
             return ControlButton.FIRST_AXIS_LEFT, True
-        if GPIO.input(self.first_axis_right.PIN):
+        elif GPIO.input(self.first_axis_right.PIN):
             print("First axis right has been pressed")
             return ControlButton.FIRST_AXIS_RIGHT, True
+        else:
+            return "", False
