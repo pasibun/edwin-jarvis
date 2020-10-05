@@ -24,9 +24,13 @@ class MovementService(object):
         GPIO.setup(self.base_stop_btn_left.PIN, GPIO.IN)
         GPIO.setup(self.base_stop_btn_right.PIN, GPIO.IN)
 
-    def moving(self, dir_pin, step_pin, steps, direction, speed):
+    def moving(self, motor, steps, direction, speed):
+        dir_pin = motor.DIR
+        step_pin = motor.STEP
         GPIO.output(dir_pin, direction)
+        print('Moving to step: ', steps)
         for x in range(steps):
+            motor.new_current_step(x)
             GPIO.output(step_pin, GPIO.HIGH)
             sleep(speed)
             GPIO.output(step_pin, GPIO.LOW)

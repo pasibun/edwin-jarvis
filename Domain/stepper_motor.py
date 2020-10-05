@@ -9,3 +9,6 @@ class StepperMotor(object):
     def __init__(self, dir, step):
         self.DIR = dir
         self.STEP = step
+
+    def new_current_step(self, step):
+        self.current_step = step

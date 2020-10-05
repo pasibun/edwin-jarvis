@@ -28,7 +28,7 @@ def starting_control_board():
             motor = stepper_motor.stepper_motor_base
             direction = motor.CW
         if result[1]:
-            stepper_motor.moving(motor.DIR, motor.STEP, steps, direction, speed)
+            stepper_motor.moving(motor, steps, direction, speed)
 
 
 def clean_up():
