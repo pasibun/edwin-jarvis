@@ -20,6 +20,9 @@ class MovementService(object):
         GPIO.setup(self.stepper_motor_first_axis.DIR, GPIO.OUT)
         GPIO.setup(self.stepper_motor_first_axis.STEP, GPIO.OUT)
 
+        GPIO.setup(self.stepper_motor_base.DIR, GPIO.OUT)
+        GPIO.setup(self.stepper_motor_base.STEP, GPIO.OUT)
+
     def init_base_stop_btn(self):
         GPIO.setup(self.base_stop_btn_left.PIN, GPIO.IN)
         GPIO.setup(self.base_stop_btn_right.PIN, GPIO.IN)
