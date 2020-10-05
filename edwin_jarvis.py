@@ -18,16 +18,17 @@ def starting_control_board():
         if result[0] == ControlButton.FIRST_AXIS_LEFT:
             motor = stepper_motor.stepper_motor_first_axis
             direction = motor.CCW
-        if result[0] == ControlButton.FIRST_AXIS_RIGHT:
+        elif result[0] == ControlButton.FIRST_AXIS_RIGHT:
             motor = stepper_motor.stepper_motor_first_axis
             direction = motor.CW
-        if result[0] == ControlButton.BASE_LEFT:
+        elif result[0] == ControlButton.BASE_LEFT:
             motor = stepper_motor.stepper_motor_base
             direction = motor.CCW
-        if result[0] == ControlButton.BASE_RIGHT:
+        elif result[0] == ControlButton.BASE_RIGHT:
             motor = stepper_motor.stepper_motor_base
             direction = motor.CW
-        stepper_motor.moving(motor.DIR, motor.STEP, steps, direction, speed)
+        if result[1]:
+            stepper_motor.moving(motor.DIR, motor.STEP, steps, direction, speed)
 
 
 def clean_up():
