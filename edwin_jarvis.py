@@ -15,16 +15,16 @@ def starting_control_board():
     direction = 1
     while True:
         result = control_board_service.what_button_is_pressed()
-        if list(result.keys())[0] == ControlButton.FIRST_AXIS_LEFT:
+        if result[0] == ControlButton.FIRST_AXIS_LEFT:
             motor = stepper_motor.stepper_motor_first_axis
             direction = motor.CCW
-        if list(result.keys())[0] == ControlButton.FIRST_AXIS_RIGHT:
+        if result[0] == ControlButton.FIRST_AXIS_RIGHT:
             motor = stepper_motor.stepper_motor_first_axis
             direction = motor.CW
-        if list(result.keys())[0] == ControlButton.BASE_LEFT:
+        if result[0] == ControlButton.BASE_LEFT:
             motor = stepper_motor.stepper_motor_base
             direction = motor.CCW
-        if list(result.keys())[0] == ControlButton.BASE_RIGHT:
+        if result[0] == ControlButton.BASE_RIGHT:
             motor = stepper_motor.stepper_motor_base
             direction = motor.CW
         stepper_motor.moving(motor.DIR, motor.STEP, steps, direction, speed)
