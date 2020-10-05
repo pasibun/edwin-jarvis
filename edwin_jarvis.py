@@ -10,7 +10,7 @@ def starting_control_board():
     global motor
     control_board_service = ControlBoardService()
     stepper_motor = MovementService()
-    steps = 500
+    steps = 1
     speed = 0.1
     direction = 1
     while True:
