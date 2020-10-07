@@ -5,10 +5,10 @@ from Domain.control_buttons import ControlButton
 
 
 class ControlBoardService(object):
-    base_left = Button(37, 'baseLeft')  # GPIO26
-    base_right = Button(35, 'baseRight')  # GPIO19
-    first_axis_left = Button(33, 'firstAxisLeft')  # GPIO13
-    first_axis_right = Button(31, 'firstAxisRight')  # GPIO6
+    base_left = Button(26, 'baseLeft')  # GPIO26
+    base_right = Button(19, 'baseRight')  # GPIO19
+    first_axis_left = Button(13, 'firstAxisLeft')  # GPIO13
+    first_axis_right = Button(6, 'firstAxisRight')  # GPIO6
 
     def __init__(self):
         print("init controlBoard service")

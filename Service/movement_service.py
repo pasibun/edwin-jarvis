@@ -6,11 +6,11 @@ from Domain.stepper_motor import StepperMotor
 
 
 class MovementService(object):
-    stepper_motor_base = StepperMotor(36, 34)  # GPIO16/GPIO12
-    stepper_motor_first_axis = StepperMotor(40, 38)  # GPIO21/GPIO20
+    stepper_motor_base = StepperMotor(16, 12)  # GPIO16/GPIO12
+    stepper_motor_first_axis = StepperMotor(21, 20)  # GPIO21/GPIO20
 
-    base_stop_btn_left = Button(23, 'BaseStopLeft')  # GPIO11
-    base_stop_btn_right = Button(29, 'BaseStopRight')  # GPIO5
+    base_stop_btn_left = Button(11, 'BaseStopLeft')  # GPIO11
+    base_stop_btn_right = Button(5, 'BaseStopRight')  # GPIO5
 
     def __init__(self):
         print("init movement service")

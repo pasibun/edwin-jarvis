@@ -41,7 +41,7 @@ if __name__ == "__main__":
         logging.basicConfig(filename='logging.log', level=logging.INFO, format='%(asctime)s %(message)s')
         logging.info("Starting application. Saving logs in ~/logging.log")
         # GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         starting_control_board()
         clean_up()
     except KeyboardInterrupt:
