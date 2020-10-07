@@ -41,7 +41,6 @@ if __name__ == "__main__":
     try:
         logging.basicConfig(filename='logging.log', level=logging.INFO, format='%(asctime)s %(message)s')
         logging.info("Starting application. Saving logs in ~/logging.log")
-        GPIO.setmode(GPIO.BOARD)
         # GPIO.setwarnings(False)
         stepper_motor.reset_motor_positions()
         starting_control_board()

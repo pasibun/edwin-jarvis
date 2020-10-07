@@ -1,5 +1,4 @@
 from time import sleep
-
 import RPi.GPIO as GPIO
 
 from Domain.button import Button
@@ -15,6 +14,7 @@ class MovementService(object):
 
     def __init__(self):
         print("init movement service")
+        GPIO.setmode(GPIO.BOARD)
         self.init_stepper_motors()
         self.init_base_stop_btn()
 
