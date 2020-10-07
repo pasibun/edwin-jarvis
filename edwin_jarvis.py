@@ -5,11 +5,10 @@ from Service.control_board_service import ControlBoardService
 from Service.movement_service import MovementService
 import logging
 
-stepper_motor = MovementService()
-
 
 def starting_control_board():
     global motor
+    stepper_motor = MovementService()
     control_board_service = ControlBoardService()
     steps = 1
     speed = 0.01
@@ -42,7 +41,7 @@ if __name__ == "__main__":
         logging.basicConfig(filename='logging.log', level=logging.INFO, format='%(asctime)s %(message)s')
         logging.info("Starting application. Saving logs in ~/logging.log")
         # GPIO.setwarnings(False)
-        stepper_motor.reset_motor_positions()
+        GPIO.setmode(GPIO.BOARD)
         starting_control_board()
         clean_up()
     except KeyboardInterrupt:
