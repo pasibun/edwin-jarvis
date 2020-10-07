@@ -5,13 +5,14 @@ from Service.control_board_service import ControlBoardService
 from Service.movement_service import MovementService
 import logging
 
+stepper_motor = MovementService()
+
 
 def starting_control_board():
     global motor
     control_board_service = ControlBoardService()
-    stepper_motor = MovementService()
     steps = 1
-    speed = 0.1
+    speed = 0.01
     direction = 1
     while True:
         result = control_board_service.what_button_is_pressed()
@@ -42,6 +43,7 @@ if __name__ == "__main__":
         logging.info("Starting application. Saving logs in ~/logging.log")
         GPIO.setmode(GPIO.BOARD)
         # GPIO.setwarnings(False)
+        stepper_motor.reset_motor_positions()
         starting_control_board()
         clean_up()
     except KeyboardInterrupt:
