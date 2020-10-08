@@ -36,12 +36,12 @@ class MovementService(object):
     def base_stop_switch_check(self, motor):
         if GPIO.input(self.first_axis_stop_switch_left.PIN):
             print("Left stop switch has been pressed")
-            self.move_motor(motor, motor.CW)
+            self.move_motor(motor, motor.CCW)
             motor.current_step = 0
             return True
         elif GPIO.input(self.first_axis_stop_switch_right.PIN):
             print("Right stop switch has been pressed")
-            self.move_motor(motor, motor.CCW)
+            self.move_motor(motor, motor.CW)
             motor.current_step = 500
             return True
 
@@ -60,3 +60,5 @@ class MovementService(object):
         print("resetting first axis to center")
         motor = self.stepper_motor_first_axis
         self.moving_to_new_step(motor, 500, motor.CW, self.default_speed)
+        sleep(2)
+        self.moving_to_new_step(motor, 50, motor.CCW, self.default_speed)
