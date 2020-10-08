@@ -21,6 +21,7 @@ class StepperMotor(object):
         self.DIR = dir
         self.STEP = step
         self.MICRO_STEPPING = micro
+        GPIO.setmode(GPIO.BCM)
         self.init_gpio_pins()
         GPIO.output(self.MICRO_STEPPING, self.RESOLUTION[resolution])
 
@@ -29,7 +30,6 @@ class StepperMotor(object):
         GPIO.setup(self.STEP, GPIO.OUT)
         GPIO.output(self.DIR, self.CW)
         GPIO.output(self.STEP, GPIO.LOW)
-
 
     def new_current_step(self, step):
         self.current_step += step
