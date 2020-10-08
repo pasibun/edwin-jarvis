@@ -33,6 +33,7 @@ class MovementService(object):
             sleep(speed)
             if self.first_axis_stop_switch_check(motor):
                 GPIO.output(motor.SLEEP, GPIO.LOW)
+                sleep(1)
                 break
 
     def first_axis_stop_switch_check(self, motor):

@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-
+from time import sleep
 from Domain.control_buttons import ControlButton
 from Service.control_board_service import ControlBoardService
 from Service.movement_service import MovementService
@@ -14,6 +14,7 @@ def starting_control_board():
     speed = 0.001
     direction = 1
     while True:
+        sleep(0.5)
         result = control_board_service.what_button_is_pressed()
         if result[0] == ControlButton.FIRST_AXIS_LEFT:
             motor = stepper_motor.stepper_motor_first_axis
