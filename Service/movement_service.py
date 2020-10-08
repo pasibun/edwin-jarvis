@@ -23,6 +23,7 @@ class MovementService(object):
         dir_pin = motor.DIR
         step_pin = motor.STEP
         GPIO.output(dir_pin, direction)
+        GPIO.output(motor.SLEEP, GPIO.HIGH)
         print('Moving steps: ', steps)
         for x in range(steps):
             motor.new_current_step(x)
@@ -60,6 +61,7 @@ class MovementService(object):
     def reset_motor_positions(self):
         print("resetting first axis to center")
         motor = self.stepper_motor_first_axis
+        GPIO.output(motor.SLEEP, GPIO.HIGH)
         self.moving_to_new_step(motor, 500, motor.CW, self.default_speed)
         sleep(2)
         self.moving_to_new_step(motor, 200, motor.CCW, self.default_speed)
