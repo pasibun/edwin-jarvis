@@ -14,7 +14,6 @@ def starting_control_board():
     speed = 0.001
     direction = 1
     while True:
-        sleep(0.5)
         result = control_board_service.what_button_is_pressed()
         if result[0] == ControlButton.FIRST_AXIS_LEFT:
             motor = stepper_motor.stepper_motor_first_axis
