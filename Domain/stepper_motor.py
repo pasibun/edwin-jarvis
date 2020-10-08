@@ -29,6 +29,7 @@ class StepperMotor(object):
         GPIO.setup(self.DIR, GPIO.OUT)
         GPIO.setup(self.STEP, GPIO.OUT)
         GPIO.output(self.DIR, self.CW)
+        GPIO.setup(self.MICRO_STEPPING, GPIO.OUT)
         GPIO.output(self.STEP, GPIO.LOW)
 
     def new_current_step(self, step):
