@@ -8,8 +8,8 @@ from Domain.stepper_motor import StepperMotor
 
 class MovementService(object):
     default_speed = 0.001
-    stepper_motor_base = StepperMotor(16, 12, (7, 8, 25), '1/4')
-    stepper_motor_first_axis = StepperMotor(21, 20, (24, 23, 18), '1/4')
+    stepper_motor_base = StepperMotor(16, 12, 15, (7, 8, 25), '1/4')
+    stepper_motor_first_axis = StepperMotor(21, 20, 14, (24, 23, 18), '1/4')
 
     first_axis_stop_switch_left = Button(11, ButtonType.STOPS_WITCH, Position.FIRST_AXIS_LEFT)
     first_axis_stop_switch_right = Button(5, ButtonType.STOPS_WITCH, Position.FIRST_AXIS_RIGHT)

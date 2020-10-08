@@ -33,6 +33,8 @@ def starting_control_board():
 
 def clean_up():
     print("Exiting program.")
+    GPIO.output(15, GPIO.HIGH)
+    GPIO.output(14, GPIO.HIGH)
     GPIO.cleanup()
 
 
