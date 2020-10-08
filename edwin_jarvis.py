@@ -8,8 +8,8 @@ import logging
 
 def starting_control_board():
     global motor
-    stepper_motor = MovementService()
     control_board_service = ControlBoardService()
+    stepper_motor = MovementService()
     steps = 1
     speed = 0.001
     direction = 1
