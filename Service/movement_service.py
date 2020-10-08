@@ -1,32 +1,19 @@
 from time import sleep
 import RPi.GPIO as GPIO
-
 from Domain.button import Button
 from Domain.stepper_motor import StepperMotor
 
 
 class MovementService(object):
-    stepper_motor_base = StepperMotor(16, 12)  # GPIO16/GPIO12
-    stepper_motor_first_axis = StepperMotor(21, 20)  # GPIO21/GPIO20
+    stepper_motor_base = StepperMotor(16, 12, [7, 8, 25], '1/4')
+    stepper_motor_first_axis = StepperMotor(21, 20, [24, 23, 18], '1/4')
 
-    base_stop_btn_left = Button(11, 'BaseStopLeft')  # GPIO11
-    base_stop_btn_right = Button(5, 'BaseStopRight')  # GPIO5
+    base_stop_btn_left = Button(11, 'BaseStopLeft')
+    base_stop_btn_right = Button(5, 'BaseStopRight')
 
     def __init__(self):
         print("init movement service")
-        self.init_stepper_motors()
         self.init_base_stop_btn()
-
-    def init_stepper_motors(self):
-        GPIO.setup(self.stepper_motor_first_axis.DIR, GPIO.OUT)
-        GPIO.setup(self.stepper_motor_first_axis.STEP, GPIO.OUT)
-        GPIO.output(self.stepper_motor_first_axis.DIR, self.stepper_motor_first_axis.CW)
-        GPIO.output(self.stepper_motor_first_axis.STEP, GPIO.LOW)
-
-        GPIO.setup(self.stepper_motor_base.DIR, GPIO.OUT)
-        GPIO.setup(self.stepper_motor_base.STEP, GPIO.OUT)
-        GPIO.output(self.stepper_motor_base.DIR, self.stepper_motor_base.CW)
-        GPIO.output(self.stepper_motor_base.STEP, GPIO.LOW)
 
     def init_base_stop_btn(self):
         GPIO.setup(self.base_stop_btn_left.PIN, GPIO.IN)
