@@ -5,8 +5,8 @@ from Domain.stepper_motor import StepperMotor
 
 
 class MovementService(object):
-    stepper_motor_base = StepperMotor(16, 12, [7, 8, 25], '1/4')
-    stepper_motor_first_axis = StepperMotor(21, 20, [24, 23, 18], '1/4')
+    stepper_motor_base = StepperMotor(16, 12, (7, 8, 25), '1/4')
+    stepper_motor_first_axis = StepperMotor(21, 20, (24, 23, 18), '1/4')
 
     base_stop_btn_left = Button(11, 'BaseStopLeft')
     base_stop_btn_right = Button(5, 'BaseStopRight')
