@@ -1,8 +1,8 @@
 from time import sleep
 import RPi.GPIO as GPIO
 from Domain.button import Button
-from Domain.button_type_enum import ButtonType
-from Domain.position_enum import Position
+from Domain.Enum.button_type_enum import ButtonType
+from Domain.Enum.position_enum import Position
 from Domain.stepper_motor import StepperMotor
 
 

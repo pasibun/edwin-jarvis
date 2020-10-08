@@ -1,3 +1,5 @@
+from Domain.Enum.button_type_enum import ButtonType
+from Domain.Enum.position_enum import Position
 from Domain.button import Button
 import RPi.GPIO as GPIO
 
@@ -5,20 +7,13 @@ from Domain.control_buttons import ControlButton
 
 
 class ControlBoardService(object):
-    base_left = Button(26, 'baseLeft')  # GPIO26
-    base_right = Button(19, 'baseRight')  # GPIO19
-    first_axis_left = Button(13, 'firstAxisLeft')  # GPIO13
-    first_axis_right = Button(6, 'firstAxisRight')  # GPIO6
+    base_left = Button(26, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD)  # GPIO26
+    base_right = Button(19, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD)  # GPIO19
+    first_axis_left = Button(13, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD)  # GPIO13
+    first_axis_right = Button(6, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD)  # GPIO6
 
     def __init__(self):
         print("init controlBoard service")
-        self.init_base_stop_btn()
-
-    def init_base_stop_btn(self):
-        GPIO.setup(self.base_left.PIN, GPIO.IN)
-        GPIO.setup(self.base_right.PIN, GPIO.IN)
-        GPIO.setup(self.first_axis_left.PIN, GPIO.IN)
-        GPIO.setup(self.first_axis_right.PIN, GPIO.IN)
 
     def what_button_is_pressed(self):
         if GPIO.input(self.base_left.PIN):
