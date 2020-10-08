@@ -30,10 +30,11 @@ class MovementService(object):
             sleep(speed)
             GPIO.output(step_pin, GPIO.LOW)
             sleep(speed)
-            if self.base_stop_switch_check(motor):
+            if self.first_axis_stop_switch_check(motor):
+                GPIO.output(motor.SLEEP, GPIO.LOW)
                 break
 
-    def base_stop_switch_check(self, motor):
+    def first_axis_stop_switch_check(self, motor):
         if GPIO.input(self.first_axis_stop_switch_left.PIN):
             print("Left stop switch has been pressed")
             self.move_motor(motor, motor.CCW)
@@ -61,4 +62,5 @@ class MovementService(object):
         motor = self.stepper_motor_first_axis
         self.moving_to_new_step(motor, 500, motor.CW, self.default_speed)
         sleep(2)
-        self.moving_to_new_step(motor, 50, motor.CCW, self.default_speed)
+        self.moving_to_new_step(motor, 200, motor.CCW, self.default_speed)
+        GPIO.output(motor.SLEEP, GPIO.LOW)

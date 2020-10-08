@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 class StepperMotor(object):
     DIR = 0  # Direction GPIO Pin
     STEP = 0  # Step GPIO Pin
-    ENABLE = 0
+    SLEEP = 0
     MICRO_STEPPING = []
     CW = 1  # Clockwise Rotation
     CCW = 0  # Counterclockwise Rotation
@@ -18,10 +18,10 @@ class StepperMotor(object):
                   '1/16': (0, 0, 1),
                   '1/32': (1, 0, 1)}
 
-    def __init__(self, dir, step, enable, micro, resolution):
+    def __init__(self, dir, step, sleep, micro, resolution):
         self.DIR = dir
         self.STEP = step
-        self.ENABLE = enable
+        self.SLEEP = sleep
         self.MICRO_STEPPING = micro
         GPIO.setmode(GPIO.BCM)
         self.init_gpio_pins()
@@ -30,10 +30,11 @@ class StepperMotor(object):
     def init_gpio_pins(self):
         GPIO.setup(self.DIR, GPIO.OUT)
         GPIO.setup(self.STEP, GPIO.OUT)
-        GPIO.setup(self.ENABLE, GPIO.OUT)
+        GPIO.setup(self.SLEEP, GPIO.OUT)
         GPIO.output(self.DIR, self.CW)
         GPIO.setup(self.MICRO_STEPPING, GPIO.OUT)
         GPIO.output(self.STEP, GPIO.LOW)
+        GPIO.output(self.SLEEP, GPIO.LOW)
 
     def new_current_step(self, step):
         self.current_step += step

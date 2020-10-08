@@ -11,7 +11,7 @@ def starting_control_board():
     stepper_motor = MovementService()
     control_board_service = ControlBoardService()
     steps = 1
-    speed = 0.1
+    speed = 0.001
     direction = 1
     while True:
         result = control_board_service.what_button_is_pressed()
@@ -33,8 +33,8 @@ def starting_control_board():
 
 def clean_up():
     print("Exiting program.")
-    GPIO.output(15, GPIO.HIGH)
-    GPIO.output(14, GPIO.HIGH)
+    GPIO.output(14, GPIO.LOW)
+    GPIO.output(15, GPIO.LOW)
     GPIO.cleanup()
 
 
