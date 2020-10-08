@@ -1,41 +1,62 @@
 from time import sleep
 import RPi.GPIO as GPIO
 from Domain.button import Button
+from Domain.button_type_enum import ButtonType
+from Domain.position_enum import Position
 from Domain.stepper_motor import StepperMotor
 
 
 class MovementService(object):
+    default_speed = 0.001
     stepper_motor_base = StepperMotor(16, 12, (7, 8, 25), '1/4')
     stepper_motor_first_axis = StepperMotor(21, 20, (24, 23, 18), '1/4')
 
-    base_stop_btn_left = Button(11, 'BaseStopLeft')
-    base_stop_btn_right = Button(5, 'BaseStopRight')
+    first_axis_stop_switch_left = Button(11, ButtonType.STOPS_WITCH, Position.FIRST_AXIS_LEFT)
+    first_axis_stop_switch_right = Button(5, ButtonType.STOPS_WITCH, Position.FIRST_AXIS_RIGHT)
 
     def __init__(self):
         print("init movement service")
-        self.init_base_stop_btn()
+        sleep(2)
+        self.reset_motor_positions()
 
-    def init_base_stop_btn(self):
-        GPIO.setup(self.base_stop_btn_left.PIN, GPIO.IN)
-        GPIO.setup(self.base_stop_btn_right.PIN, GPIO.IN)
-
-    def moving(self, motor, steps, direction, speed):
+    def moving_to_new_step(self, motor, steps, direction, speed):
         dir_pin = motor.DIR
         step_pin = motor.STEP
         GPIO.output(dir_pin, direction)
-        print('Moving to step: ', steps)
+        print('Moving steps: ', steps)
         for x in range(steps):
             motor.new_current_step(x)
             GPIO.output(step_pin, GPIO.HIGH)
             sleep(speed)
             GPIO.output(step_pin, GPIO.LOW)
             sleep(speed)
-            if self.base_stop_switch_check():
-                print("Stop switch has been pressed!")
+            if self.base_stop_switch_check(motor):
                 break
 
-    def base_stop_switch_check(self):
-        return GPIO.input(self.base_stop_btn_left.PIN) or GPIO.input(self.base_stop_btn_right.PIN)
+    def base_stop_switch_check(self, motor):
+        if GPIO.input(self.first_axis_stop_switch_left.PIN):
+            print("Left stop switch has been pressed")
+            self.move_motor(motor, motor.CW)
+            motor.current_step = 0
+            return True
+        elif GPIO.input(self.first_axis_stop_switch_right.PIN):
+            print("Right stop switch has been pressed")
+            self.move_motor(motor, motor.CCW)
+            motor.current_step = 500
+            return True
+
+    def move_motor(self, motor, direction):
+        dir_pin = motor.DIR
+        step_pin = motor.STEP
+        GPIO.output(dir_pin, direction)
+        for x in range(10):
+            motor.new_current_step(x)
+            GPIO.output(step_pin, GPIO.HIGH)
+            sleep(self.default_speed)
+            GPIO.output(step_pin, GPIO.LOW)
+            sleep(self.default_speed)
 
     def reset_motor_positions(self):
-        print("dingen")
+        print("resetting first axis to center")
+        motor = self.stepper_motor_first_axis
+        self.moving_to_new_step(motor, 500, motor.CW, self.default_speed)
