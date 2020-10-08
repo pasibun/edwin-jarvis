@@ -33,9 +33,9 @@ def starting_control_board():
 
 def clean_up():
     print("Exiting program.")
+    GPIO.cleanup()
     GPIO.output(14, GPIO.LOW)
     GPIO.output(15, GPIO.LOW)
-    GPIO.cleanup()
 
 
 if __name__ == "__main__":
