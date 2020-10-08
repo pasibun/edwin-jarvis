@@ -11,7 +11,7 @@ def starting_control_board():
     stepper_motor = MovementService()
     control_board_service = ControlBoardService()
     steps = 1
-    speed = 0.01
+    speed = 0.1
     direction = 1
     while True:
         result = control_board_service.what_button_is_pressed()
