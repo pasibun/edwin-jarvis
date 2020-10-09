@@ -62,6 +62,7 @@ class MovementService(object):
     def reset_motor_positions(self):
         print("resetting first axis to center")
         motor = self.stepper_motor_first_axis
+        sleep(1)
         self.moving_to_new_step(motor, 500, motor.CW, self.default_speed)
         sleep(2)
         self.moving_to_new_step(motor, 200, motor.CCW, self.default_speed)
