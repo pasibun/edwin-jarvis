@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 from Domain.control_buttons import ControlButton
 from Service.control_board_service import ControlBoardService
+from Service.mcp_driver_service import IOExpander
 from Service.movement_service import MovementService
 import logging
 
@@ -9,6 +10,7 @@ def starting_control_board():
     global motor
     control_board_service = ControlBoardService()
     stepper_motor = MovementService()
+    io_expander = IOExpander()
     steps = 1
     speed = 0.001
     direction = 1
@@ -16,10 +18,12 @@ def starting_control_board():
     while True:
         result = control_board_service.what_button_is_pressed()
         if first_time:
+            io_expander.write_digital(io_expander.led_pin, 1)
             motor = stepper_motor.stepper_motor_first_axis
             direction = motor.CCW
             stepper_motor.moving_to_new_step(motor, 500, direction, speed)
             first_time = False
+            io_expander.write_digital(io_expander.led_pin, 0)
         if result[0] == ControlButton.FIRST_AXIS_LEFT:
             motor = stepper_motor.stepper_motor_first_axis
             direction = motor.CCW
@@ -33,7 +37,9 @@ def starting_control_board():
             motor = stepper_motor.stepper_motor_base
             direction = motor.CW
         if result[1]:
+            io_expander.write_digital(io_expander.led_pin, 1)
             stepper_motor.moving_to_new_step(motor, steps, direction, speed)
+            io_expander.write_digital(io_expander.led_pin, 0)
 
 
 def clean_up():
