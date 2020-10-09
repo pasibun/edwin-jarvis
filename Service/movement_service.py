@@ -24,7 +24,6 @@ class MovementService(object):
         step_pin = motor.STEP
         GPIO.output(dir_pin, direction)
         GPIO.output(motor.SLEEP, GPIO.HIGH)
-        print('Moving steps: ', steps)
         for x in range(steps):
             motor.new_current_step(x)
             GPIO.output(step_pin, GPIO.HIGH)
@@ -35,6 +34,7 @@ class MovementService(object):
                 GPIO.output(motor.SLEEP, GPIO.LOW)
                 sleep(1)
                 break
+        print("New motor step position: ", motor.current_step)
 
     def first_axis_stop_switch_check(self, motor):
         if GPIO.input(self.first_axis_stop_switch_left.PIN):
