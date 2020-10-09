@@ -19,7 +19,6 @@ def starting_control_board():
             motor = stepper_motor.stepper_motor_first_axis
             direction = motor.CCW
             stepper_motor.moving_to_new_step(motor, 500, direction, speed)
-            stepper_motor.moving_to_new_step(motor, 210, motor.CW, speed)
             first_time = False
         if result[0] == ControlButton.FIRST_AXIS_LEFT:
             motor = stepper_motor.stepper_motor_first_axis
