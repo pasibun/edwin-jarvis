@@ -16,6 +16,8 @@ class MovementService(object):
 
     def __init__(self):
         print("init movement service")
+        GPIO.output(self.stepper_motor_base.SLEEP, GPIO.HIGH)
+        GPIO.output(self.stepper_motor_first_axis.SLEEP, GPIO.HIGH)
 
     def moving_to_new_step(self, motor, steps, direction, speed):
         dir_pin = motor.DIR
@@ -57,11 +59,3 @@ class MovementService(object):
             GPIO.output(step_pin, GPIO.LOW)
             sleep(self.default_speed)
 
-    def reset_motor_positions(self):
-        print("resetting first axis to center")
-        motor = self.stepper_motor_first_axis
-        sleep(1)
-        self.moving_to_new_step(motor, 500, motor.CW, self.default_speed)
-        sleep(2)
-        self.moving_to_new_step(motor, 200, motor.CCW, self.default_speed)
-        GPIO.output(motor.SLEEP, GPIO.LOW)
