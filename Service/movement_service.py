@@ -45,7 +45,7 @@ class MovementService(object):
         elif GPIO.input(self.first_axis_stop_switch_right.PIN):
             print("Right stop switch has been pressed")
             self.move_motor(motor, motor.CW)
-            motor.current_step = 500
+            motor.current_step = 445
             return True
 
     def move_motor(self, motor, direction):
