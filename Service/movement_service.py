@@ -25,7 +25,7 @@ class MovementService(object):
         GPIO.output(dir_pin, direction)
         GPIO.output(motor.SLEEP, GPIO.HIGH)
         for x in range(steps):
-            motor.new_current_step(x, direction)
+            motor.new_current_step(x+1, direction)
             GPIO.output(step_pin, GPIO.HIGH)
             sleep(speed)
             GPIO.output(step_pin, GPIO.LOW)
@@ -53,7 +53,7 @@ class MovementService(object):
         step_pin = motor.STEP
         GPIO.output(dir_pin, direction)
         for x in range(10):
-            motor.new_current_step(x)
+            motor.new_current_step(x, direction)
             GPIO.output(step_pin, GPIO.HIGH)
             sleep(self.default_speed)
             GPIO.output(step_pin, GPIO.LOW)
