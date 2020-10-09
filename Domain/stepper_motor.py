@@ -38,6 +38,6 @@ class StepperMotor(object):
 
     def new_current_step(self, step, direction):
         if direction == self.CW:
-            self.current_step = self.current_step + step
-        elif direction == self.CCW:
             self.current_step = self.current_step - step
+        elif direction == self.CCW:
+            self.current_step = self.current_step + step
