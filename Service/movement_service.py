@@ -16,8 +16,6 @@ class MovementService(object):
 
     def __init__(self):
         print("init movement service")
-        sleep(2)
-        self.reset_motor_positions()
 
     def moving_to_new_step(self, motor, steps, direction, speed):
         dir_pin = motor.DIR

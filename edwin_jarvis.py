@@ -13,6 +13,8 @@ def starting_control_board():
     steps = 1
     speed = 0.001
     direction = 1
+    stepper_motor.reset_motor_positions()
+    sleep(2)
     while True:
         result = control_board_service.what_button_is_pressed()
         if result[0] == ControlButton.FIRST_AXIS_LEFT:
