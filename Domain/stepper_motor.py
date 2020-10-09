@@ -36,5 +36,8 @@ class StepperMotor(object):
         GPIO.output(self.STEP, GPIO.LOW)
         GPIO.output(self.SLEEP, GPIO.LOW)
 
-    def new_current_step(self, step):
-        self.current_step += step
+    def new_current_step(self, step, direction):
+        if direction == self.CW:
+            self.current_step = self.current_step + step
+        elif direction == self.CCW:
+            self.current_step = self.current_step - step
