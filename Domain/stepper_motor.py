@@ -10,6 +10,7 @@ class StepperMotor(object):
     CCW = 0  # Counterclockwise Rotation
     SPR = 200  # Steps per Revolution (360 / 1.8)
     current_step = 455
+    DEFAULT_MAX_STEP = 455
 
     RESOLUTION = {'Full': (0, 0, 0),
                   'Half': (1, 0, 0),

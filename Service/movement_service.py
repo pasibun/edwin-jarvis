@@ -25,7 +25,7 @@ class MovementService(object):
         GPIO.output(dir_pin, direction)
         GPIO.output(motor.SLEEP, GPIO.HIGH)
         for x in range(steps):
-            motor.new_current_step(x+1, direction)
+            motor.new_current_step(x + 1, direction)
             GPIO.output(step_pin, GPIO.HIGH)
             sleep(speed)
             GPIO.output(step_pin, GPIO.LOW)
@@ -45,7 +45,7 @@ class MovementService(object):
         elif GPIO.input(self.first_axis_stop_switch_right.PIN):
             print("Right stop switch has been pressed")
             self.move_motor(motor, motor.CW)
-            motor.current_step = 445
+            motor.current_step = motor.DEFAULT_MAX_STEP
             return True
 
     def move_motor(self, motor, direction):
@@ -58,4 +58,3 @@ class MovementService(object):
             sleep(self.default_speed)
             GPIO.output(step_pin, GPIO.LOW)
             sleep(self.default_speed)
-
