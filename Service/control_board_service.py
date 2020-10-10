@@ -20,16 +20,12 @@ class ControlBoardService(object):
 
     def get_button_pressed(self):
         if GPIO.input(self.base_left.PIN):
-            self.return_pressed_button(self.base_left)
+            return self.base_left.CONTROL, True
         elif GPIO.input(self.base_right.PIN):
-            self.return_pressed_button(self.base_right)
+            return self.base_right.CONTROL, True
         elif GPIO.input(self.first_axis_left.PIN):
-            self.return_pressed_button(self.first_axis_left)
+            return self.first_axis_left.CONTROL, True
         elif GPIO.input(self.first_axis_right.PIN):
-            self.return_pressed_button(self.first_axis_right)
+            return self.first_axis_right.CONTROL, True
         else:
             return "", False
-
-    def return_pressed_button(self, btn):
-        print(btn.CONTROL, " has been pressed")
-        return btn.CONTROL, True
