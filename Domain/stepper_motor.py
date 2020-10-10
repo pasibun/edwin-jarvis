@@ -2,13 +2,14 @@ import RPi.GPIO as GPIO
 
 
 class StepperMotor(object):
-    DIR = 0  # Direction GPIO Pin
-    STEP = 0  # Step GPIO Pin
+    stop_switch_left = None
+    stop_switch_right = None
+    DIR = 0
+    STEP = 0
     SLEEP = 0
     MICRO_STEPPING = []
     CW = 1  # Clockwise Rotation
     CCW = 0  # Counterclockwise Rotation
-    SPR = 200  # Steps per Revolution (360 / 1.8)
     current_step = 455
     DEFAULT_MAX_STEP = 455
 
@@ -27,6 +28,10 @@ class StepperMotor(object):
         GPIO.setmode(GPIO.BCM)
         self.init_gpio_pins()
         GPIO.output(self.MICRO_STEPPING, self.RESOLUTION[resolution])
+
+    def init_stop_switches(self, stop_switch_left, stop_switch_right):
+        self.stop_switch_left = stop_switch_left
+        self.stop_switch_right = stop_switch_right
 
     def init_gpio_pins(self):
         GPIO.setup(self.DIR, GPIO.OUT)

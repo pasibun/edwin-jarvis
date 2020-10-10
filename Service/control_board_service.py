@@ -1,32 +1,35 @@
-from Domain.Enum.button_type_enum import ButtonType
-from Domain.Enum.position_enum import Position
-from Domain.button import Button
 import RPi.GPIO as GPIO
 
-from Domain.control_buttons import ControlButton
+from Domain.Enum.button_type_enum import ButtonType
+from Domain.Enum.control_buttons_enum import ControlButton
+from Domain.Enum.position_enum import Position
+from Domain.button import Button
 
 
 class ControlBoardService(object):
-    base_left = Button(26, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD)  # GPIO26
-    base_right = Button(19, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD)  # GPIO19
-    first_axis_left = Button(13, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD)  # GPIO13
-    first_axis_right = Button(6, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD)  # GPIO6
+    base_left = Button(26, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_LEFT)
+    base_right = Button(19, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_Right)
+
+    first_axis_left = Button(13, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD,
+                             ControlButton.FIRST_AXIS_LEFT)
+    first_axis_right = Button(6, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD,
+                              ControlButton.FIRST_AXIS_Right)
 
     def __init__(self):
         print("init controlBoard service")
 
-    def what_button_is_pressed(self):
+    def get_button_pressed(self):
         if GPIO.input(self.base_left.PIN):
-            print("Base left has been pressed")
-            return ControlButton.BASE_LEFT, True
+            self.return_pressed_button(self.base_left)
         elif GPIO.input(self.base_right.PIN):
-            print("Base right has been pressed")
-            return ControlButton.BASE_RIGHT, True
+            self.return_pressed_button(self.base_right)
         elif GPIO.input(self.first_axis_left.PIN):
-            print("First axis left has been pressed")
-            return ControlButton.FIRST_AXIS_LEFT, True
+            self.return_pressed_button(self.first_axis_left)
         elif GPIO.input(self.first_axis_right.PIN):
-            print("First axis right has been pressed")
-            return ControlButton.FIRST_AXIS_RIGHT, True
+            self.return_pressed_button(self.first_axis_right)
         else:
             return "", False
+
+    def return_pressed_button(self, btn):
+        print(btn.CONTROL, " has been pressed")
+        return btn.CONTROL, True

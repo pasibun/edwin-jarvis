@@ -11,15 +11,15 @@ class MovementService(object):
     stepper_motor_base = StepperMotor(16, 12, 15, (7, 8, 25), '1/4')
     stepper_motor_first_axis = StepperMotor(21, 20, 14, (24, 23, 18), '1/4')
 
-    first_axis_stop_switch_left = Button(11, ButtonType.STOPS_WITCH, Position.FIRST_AXIS_LEFT)
-    first_axis_stop_switch_right = Button(5, ButtonType.STOPS_WITCH, Position.FIRST_AXIS_RIGHT)
-
     def __init__(self):
         print("init movement service")
         GPIO.output(self.stepper_motor_base.SLEEP, GPIO.HIGH)
         GPIO.output(self.stepper_motor_first_axis.SLEEP, GPIO.HIGH)
+        self.stepper_motor_first_axis.init_stop_switches(
+            Button(11, ButtonType.STOPS_WITCH, Position.FIRST_AXIS_LEFT, None),
+            Button(5, ButtonType.STOPS_WITCH, Position.FIRST_AXIS_RIGHT, None))
 
-    def moving_to_new_step(self, motor, steps, direction, speed):
+    def moving_to_new_step(self, motor, steps, direction, speed, pin_left, pin_right):
         dir_pin = motor.DIR
         step_pin = motor.STEP
         GPIO.output(dir_pin, direction)
@@ -30,19 +30,19 @@ class MovementService(object):
             sleep(speed)
             GPIO.output(step_pin, GPIO.LOW)
             sleep(speed)
-            if self.first_axis_stop_switch_check(motor):
+            if self.first_axis_stop_switch_check(motor, pin_left, pin_right):
                 GPIO.output(motor.SLEEP, GPIO.LOW)
                 sleep(1)
                 break
         print("New motor step position: ", motor.current_step)
 
-    def first_axis_stop_switch_check(self, motor):
-        if GPIO.input(self.first_axis_stop_switch_left.PIN):
+    def first_axis_stop_switch_check(self, motor, pin_left, pin_right):
+        if pin_left != '' and GPIO.input(pin_left):
             print("Left stop switch has been pressed")
             self.move_motor(motor, motor.CCW)
             motor.current_step = 0
             return True
-        elif GPIO.input(self.first_axis_stop_switch_right.PIN):
+        elif pin_right != '' and GPIO.input(pin_right):
             print("Right stop switch has been pressed")
             self.move_motor(motor, motor.CW)
             motor.current_step = motor.DEFAULT_MAX_STEP
