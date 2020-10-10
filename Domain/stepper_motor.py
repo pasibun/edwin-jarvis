@@ -10,8 +10,8 @@ class StepperMotor(object):
     MICRO_STEPPING = []
     CW = 1  # Clockwise Rotation
     CCW = 0  # Counterclockwise Rotation
-    current_step = 455
-    DEFAULT_MAX_STEP = 455
+    current_step = 458
+    DEFAULT_MAX_STEP = 458
 
     RESOLUTION = {'Full': (0, 0, 0),
                   'Half': (1, 0, 0),
