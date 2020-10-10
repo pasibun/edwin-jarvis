@@ -8,12 +8,12 @@ from Domain.button import Button
 
 class ControlBoardService(object):
     base_left = Button(26, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_LEFT)
-    base_right = Button(19, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_Right)
+    base_right = Button(19, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_RIGHT)
 
     first_axis_left = Button(13, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD,
                              ControlButton.FIRST_AXIS_LEFT)
     first_axis_right = Button(6, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD,
-                              ControlButton.FIRST_AXIS_Right)
+                              ControlButton.FIRST_AXIS_RIGHT)
 
     def __init__(self):
         print("init controlBoard service")
