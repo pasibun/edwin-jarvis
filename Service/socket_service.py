@@ -30,7 +30,7 @@ class Socket(object):
                 conn.send(b'Thanks')
             conn.close()
             print("client disconnected")
-            self.input_socket(from_client)
+            self.input_socket(from_client.decode())
 
     def input_socket(self, input):
         value = ControlButton.FIRST_AXIS_LEFT
