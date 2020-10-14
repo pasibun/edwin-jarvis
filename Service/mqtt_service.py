@@ -1,7 +1,6 @@
 import paho.mqtt.client as mqtt
 
-from Domain.Enum.control_buttons_enum import ControlButton
-from edwin_jarvis import mqtt_input_trigger
+from edwin_jarvis import on_message
 
 
 class MqttService(object):
@@ -21,11 +20,11 @@ class MqttService(object):
         self.enter_credentials()
         print("Making connection with mqtt service.")
         self.client.on_connect = self.on_connect
-        self.client.on_message = self.on_message
+        self.client.on_message = on_message
         self.client.username_pw_set(username=self.MQTT_USERNAME, password=self.MQTT_PASSWORD)
         self.client.connected_flag = False
         self.client.connect(self.MQTT_HOST, port=1883, keepalive=60, bind_address="")
-        self.client.loop_start()  # loop_forever
+        self.client.loop_forever()  # loop_start
 
     def enter_credentials(self):
         try:
@@ -42,7 +41,9 @@ class MqttService(object):
             print("Wrong fucking input retard.")
 
     def subscribe_to_topics(self):
+        print("Subscribing to topic: ", self.MQTT_TOPIC_BASE)
         self.client.subscribe(self.MQTT_TOPIC_BASE)
+        print("Subscribing to topic: ", self.MQTT_TOPIC_FIRST_AXIS)
         self.client.subscribe(self.MQTT_TOPIC_FIRST_AXIS)
 
     def on_connect(self, client, userdata, flags, rc):
@@ -51,16 +52,3 @@ class MqttService(object):
             print("connected ok")
         else:
             print("Bad connection Returned code= ", rc)
-
-    def on_message(self, client, userdata, message):
-        print("message received ", str(message.payload.decode("utf-8")))
-        value = ControlButton.FIRST_AXIS_LEFT
-        if str(message.payload.decode("utf-8")).lower() == "right":
-            value = ControlButton.BASE_RIGHT
-        elif str(message.payload.decode("utf-8")).lower() == "left":
-            value = ControlButton.BASE_LEFT
-        elif str(message.payload.decode("utf-8")).lower() == "up":
-            value = ControlButton.FIRST_AXIS_LEFT
-        elif str(message.payload.decode("utf-8")).lower() == "down":
-            value = ControlButton.FIRST_AXIS_RIGHT
-        mqtt_input_trigger(value)

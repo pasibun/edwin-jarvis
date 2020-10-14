@@ -1,10 +1,10 @@
-import RPi.GPIO as GPIO
-from Domain.Enum.control_buttons_enum import ControlButton
-from Service.control_board_service import ControlBoardService
-from Service.mcp_driver_service import IOExpander
-from Service.movement_service import MovementService
 import logging
 
+import RPi.GPIO as GPIO
+from time import sleep
+from Domain.Enum.control_buttons_enum import ControlButton
+from Service.mcp_driver_service import IOExpander
+from Service.movement_service import MovementService
 from Service.mqtt_service import MqttService
 
 
@@ -12,7 +12,6 @@ class EdwinJarvis(object):
     # control_board_service = ControlBoardService()
     stepper_motor = MovementService()
     io_expander = IOExpander()
-    mqtt = MqttService()
 
     steps = 1
     speed = 0.001
@@ -58,17 +57,28 @@ class EdwinJarvis(object):
         self.first_time = False
         self.io_expander.write_digital(self.io_expander.led_pin, 0)
 
-    def clean_up(self):
-        print("Exiting program.")
-        GPIO.output(14, GPIO.LOW)
-        GPIO.output(15, GPIO.LOW)
-
 
 edwin = EdwinJarvis()
 
 
-def mqtt_input_trigger(payload):
-    edwin.starting_control_board(payload)
+def clean_up():
+    print("Exiting program.")
+    GPIO.output(14, GPIO.LOW)
+    GPIO.output(15, GPIO.LOW)
+
+
+def on_message(client, userdata, message):
+    print("message received ", str(message.payload.decode("utf-8")))
+    value = ControlButton.FIRST_AXIS_LEFT
+    if str(message.payload.decode("utf-8")).lower() == "right":
+        value = ControlButton.BASE_RIGHT
+    elif str(message.payload.decode("utf-8")).lower() == "left":
+        value = ControlButton.BASE_LEFT
+    elif str(message.payload.decode("utf-8")).lower() == "up":
+        value = ControlButton.FIRST_AXIS_LEFT
+    elif str(message.payload.decode("utf-8")).lower() == "down":
+        value = ControlButton.FIRST_AXIS_RIGHT
+    edwin.starting_control_board(value)
 
 
 if __name__ == "__main__":
@@ -78,6 +88,8 @@ if __name__ == "__main__":
         # GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         edwin.first_time_run()
-        edwin.clean_up()
+        sleep(2)
+        MqttService()
+        clean_up()
     except KeyboardInterrupt:
-        edwin.clean_up()
+        clean_up()
