@@ -1,10 +1,12 @@
 import paho.mqtt.client as mqtt
 
-from edwin_jarvis import on_message
+from Domain.Enum.control_buttons_enum import ControlButton
+from Service.control_board_service import ControlBoardService
 
 
 class MqttService(object):
     client = mqtt.Client("edwin-jarvis")
+    control_board = ControlBoardService()
     MQTT_HOST = "10.0.0.109"
     MQTT_USERNAME = ""
     MQTT_PASSWORD = ""
@@ -20,7 +22,7 @@ class MqttService(object):
         self.enter_credentials()
         print("Making connection with mqtt service.")
         self.client.on_connect = self.on_connect
-        self.client.on_message = on_message
+        self.client.on_message = self.on_message
         self.client.username_pw_set(username=self.MQTT_USERNAME, password=self.MQTT_PASSWORD)
         self.client.connected_flag = False
         self.client.connect(self.MQTT_HOST, port=1883, keepalive=60, bind_address="")
@@ -52,3 +54,16 @@ class MqttService(object):
             print("connected ok")
         else:
             print("Bad connection Returned code= ", rc)
+
+    def on_message(self, client, userdata, message):
+        print("message received ", str(message.payload.decode("utf-8")))
+        value = ControlButton.FIRST_AXIS_LEFT
+        if str(message.payload.decode("utf-8")).lower() == "right":
+            value = ControlButton.BASE_RIGHT
+        elif str(message.payload.decode("utf-8")).lower() == "left":
+            value = ControlButton.BASE_LEFT
+        elif str(message.payload.decode("utf-8")).lower() == "up":
+            value = ControlButton.FIRST_AXIS_LEFT
+        elif str(message.payload.decode("utf-8")).lower() == "down":
+            value = ControlButton.FIRST_AXIS_RIGHT
+        self.control_board.determine_motor_to_control(value)

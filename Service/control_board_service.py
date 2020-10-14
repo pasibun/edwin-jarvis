@@ -1,31 +1,64 @@
-import RPi.GPIO as GPIO
-
-from Domain.Enum.button_type_enum import ButtonType
 from Domain.Enum.control_buttons_enum import ControlButton
-from Domain.Enum.position_enum import Position
-from Domain.button import Button
+from Service.mcp_driver_service import IOExpander
+from Service.movement_service import MovementService
 
 
 class ControlBoardService(object):
-    base_left = Button(26, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_LEFT)
-    base_right = Button(19, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_RIGHT)
+    stepper_motor = MovementService()
+    io_expander = IOExpander()
 
-    first_axis_left = Button(13, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD,
-                             ControlButton.FIRST_AXIS_LEFT)
-    first_axis_right = Button(6, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD,
-                              ControlButton.FIRST_AXIS_RIGHT)
+    steps = 1
+    speed = 0.001
+    first_time = True
 
     def __init__(self):
         print("init controlBoard service")
 
-    def get_button_pressed(self):
-        if GPIO.input(self.base_left.PIN):
-            return self.base_left.CONTROL, True
-        elif GPIO.input(self.base_right.PIN):
-            return self.base_right.CONTROL, True
-        elif GPIO.input(self.first_axis_left.PIN):
-            return self.first_axis_left.CONTROL, True
-        elif GPIO.input(self.first_axis_right.PIN):
-            return self.first_axis_right.CONTROL, True
+    def determine_motor_to_control(self, mqtt_payload):
+        motor = self.stepper_motor.stepper_motor_first_axis
+        direction = motor.CCW
+        if mqtt_payload == ControlButton.FIRST_AXIS_LEFT:
+            motor = self.stepper_motor.stepper_motor_first_axis
+            direction = motor.CCW
+        elif mqtt_payload == ControlButton.FIRST_AXIS_RIGHT:
+            motor = self.stepper_motor.stepper_motor_first_axis
+            direction = motor.CW
+        elif mqtt_payload == ControlButton.BASE_LEFT:
+            motor = self.stepper_motor.stepper_motor_base
+            direction = motor.CCW
+        elif mqtt_payload == ControlButton.BASE_RIGHT:
+            motor = self.stepper_motor.stepper_motor_base
+            direction = motor.CW
+        self.run_motor_with_led(motor, direction)
+
+    def run_motor_with_led(self, motor, direction):
+        self.io_expander.write_digital(self.io_expander.led_pin, 1)
+        if motor.stop_switch_left is not None:
+            stop_switch_left = motor.stop_switch_left.PIN
+            stop_switch_right = motor.stop_switch_right.PIN
         else:
-            return "", False
+            stop_switch_left = ''
+            stop_switch_right = ''
+        self.stepper_motor.moving_to_new_step(motor, self.steps, direction, self.speed, stop_switch_left,
+                                              stop_switch_right)
+        self.io_expander.write_digital(self.io_expander.led_pin, 0)
+
+    # base_left = Button(26, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_LEFT)
+    # base_right = Button(19, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_RIGHT)
+    #
+    # first_axis_left = Button(13, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD,
+    #                          ControlButton.FIRST_AXIS_LEFT)
+    # first_axis_right = Button(6, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD,
+    #                           ControlButton.FIRST_AXIS_RIGHT)
+
+    # def get_button_pressed(self):
+    #     if GPIO.input(self.base_left.PIN):
+    #         return self.base_left.CONTROL, True
+    #     elif GPIO.input(self.base_right.PIN):
+    #         return self.base_right.CONTROL, True
+    #     elif GPIO.input(self.first_axis_left.PIN):
+    #         return self.first_axis_left.CONTROL, True
+    #     elif GPIO.input(self.first_axis_right.PIN):
+    #         return self.first_axis_right.CONTROL, True
+    #     else:
+    #         return "", False
