@@ -5,11 +5,14 @@ from Service.mcp_driver_service import IOExpander
 from Service.movement_service import MovementService
 import logging
 
+from Service.mqtt_service import MqttService
+
 
 class EdwinJarvis(object):
     control_board_service = ControlBoardService()
     stepper_motor = MovementService()
     io_expander = IOExpander()
+    mqtt = MqttService()
 
     steps = 1
     speed = 0.001
