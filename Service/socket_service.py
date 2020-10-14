@@ -18,6 +18,7 @@ class Socket(object):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.bind((self.HOST, self.PORT))
             s.listen()
+            print("listening..")
             conn, addr = s.accept()
             with conn:
                 print('Connected by', addr)
