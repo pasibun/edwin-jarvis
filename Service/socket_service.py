@@ -29,16 +29,17 @@ class Socket(object):
                 self.incoming_data = data
             conn.close()
             print("client disconnected")
+            print("Incoming message: ", self.incoming_data)
             self.input_socket(self.incoming_data)
 
     def input_socket(self, input):
         value = ControlButton.FIRST_AXIS_LEFT
-        if input.lower() == "right":
+        if "right" in input.lower():
             value = ControlButton.BASE_RIGHT
-        elif input.lower() == "left":
+        elif "left" in input.lower():
             value = ControlButton.BASE_LEFT
-        elif input.lower() == "up":
+        elif "up" in input.lower():
             value = ControlButton.FIRST_AXIS_LEFT
-        elif input.lower() == "down":
+        elif "down" in input.lower():
             value = ControlButton.FIRST_AXIS_RIGHT
         self.control_board.determine_motor_to_control(value)
