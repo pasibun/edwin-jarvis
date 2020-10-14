@@ -9,7 +9,7 @@ from Service.mqtt_service import MqttService
 
 
 class EdwinJarvis(object):
-    control_board_service = ControlBoardService()
+    # control_board_service = ControlBoardService()
     stepper_motor = MovementService()
     io_expander = IOExpander()
     mqtt = MqttService()
@@ -18,27 +18,22 @@ class EdwinJarvis(object):
     speed = 0.001
     first_time = True
 
-    def starting_control_board(self):
+    def starting_control_board(self, mqtt_payload):
         motor = self.stepper_motor.stepper_motor_first_axis
         direction = motor.CCW
-        while True:
-            result = self.control_board_service.get_button_pressed()
-            if self.first_time:
-                self.first_time_run()
-            if result[0] == ControlButton.FIRST_AXIS_LEFT:
-                motor = self.stepper_motor.stepper_motor_first_axis
-                direction = motor.CCW
-            elif result[0] == ControlButton.FIRST_AXIS_RIGHT:
-                motor = self.stepper_motor.stepper_motor_first_axis
-                direction = motor.CW
-            elif result[0] == ControlButton.BASE_LEFT:
-                motor = self.stepper_motor.stepper_motor_base
-                direction = motor.CCW
-            elif result[0] == ControlButton.BASE_RIGHT:
-                motor = self.stepper_motor.stepper_motor_base
-                direction = motor.CW
-            if result[1]:
-                self.run_motor_with_led(motor, direction)
+        if mqtt_payload == ControlButton.FIRST_AXIS_LEFT:
+            motor = self.stepper_motor.stepper_motor_first_axis
+            direction = motor.CCW
+        elif mqtt_payload == ControlButton.FIRST_AXIS_RIGHT:
+            motor = self.stepper_motor.stepper_motor_first_axis
+            direction = motor.CW
+        elif mqtt_payload == ControlButton.BASE_LEFT:
+            motor = self.stepper_motor.stepper_motor_base
+            direction = motor.CCW
+        elif mqtt_payload == ControlButton.BASE_RIGHT:
+            motor = self.stepper_motor.stepper_motor_base
+            direction = motor.CW
+        self.run_motor_with_led(motor, direction)
 
     def run_motor_with_led(self, motor, direction):
         self.io_expander.write_digital(self.io_expander.led_pin, 1)
@@ -70,13 +65,19 @@ class EdwinJarvis(object):
 
 
 edwin = EdwinJarvis()
+
+
+def mqtt_input_trigger(payload):
+    edwin.starting_control_board(payload)
+
+
 if __name__ == "__main__":
     try:
         logging.basicConfig(filename='logging.log', level=logging.INFO, format='%(asctime)s %(message)s')
         logging.info("Starting application. Saving logs in ~/logging.log")
         # GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
-        edwin.starting_control_board()
+        edwin.first_time_run()
         edwin.clean_up()
     except KeyboardInterrupt:
         edwin.clean_up()

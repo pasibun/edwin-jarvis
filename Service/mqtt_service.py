@@ -1,5 +1,8 @@
 import paho.mqtt.client as mqtt
 
+from Domain.Enum.control_buttons_enum import ControlButton
+from edwin_jarvis import mqtt_input_trigger
+
 
 class MqttService(object):
     client = mqtt.Client("edwin-jarvis")
@@ -51,3 +54,13 @@ class MqttService(object):
 
     def on_message(self, client, userdata, message):
         print("message received ", str(message.payload.decode("utf-8")))
+        value = ControlButton.FIRST_AXIS_LEFT
+        if str(message.payload.decode("utf-8")).lower() == "right":
+            value = ControlButton.BASE_RIGHT
+        elif str(message.payload.decode("utf-8")).lower() == "left":
+            value = ControlButton.BASE_LEFT
+        elif str(message.payload.decode("utf-8")).lower() == "up":
+            value = ControlButton.FIRST_AXIS_LEFT
+        elif str(message.payload.decode("utf-8")).lower() == "down":
+            value = ControlButton.FIRST_AXIS_RIGHT
+        mqtt_input_trigger(value)
