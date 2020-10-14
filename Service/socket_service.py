@@ -25,9 +25,8 @@ class Socket(object):
                     data = conn.recv(1024)
                     if not data:
                         break
-                    conn.sendall(data)
-                    print(data)
-                    self.input_socket(data)
+                    print(data.decode())
+                    self.input_socket(data.decode())
 
     def input_socket(self, input):
         value = ControlButton.FIRST_AXIS_LEFT
