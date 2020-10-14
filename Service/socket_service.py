@@ -8,6 +8,7 @@ class Socket(object):
     control_board = ControlBoardService()
     HOST = '127.0.0.1'
     PORT = 1337
+    incoming_data = ''
 
     def __init__(self):
         self.control_board.first_time_run()
@@ -20,17 +21,15 @@ class Socket(object):
         serv.listen(5)
         while True:
             conn, addr = serv.accept()
-            from_client = ''
             while True:
                 data = conn.recv(4096)
                 if not data:
                     break
-                from_client += data
-                print(from_client)
-                conn.send(b'Thanks')
+                conn.send(b'Thanks for the message sir')
+                self.incoming_data = data
             conn.close()
             print("client disconnected")
-            self.input_socket(from_client.decode())
+            self.input_socket(self.incoming_data)
 
     def input_socket(self, input):
         value = ControlButton.FIRST_AXIS_LEFT
