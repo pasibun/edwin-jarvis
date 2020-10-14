@@ -17,6 +17,7 @@ class MqttService(object):
         print("init mqtt service")
         self.make_connection()
         self.subscribe_to_topics()
+        self.control_board.first_time_run()
 
     def make_connection(self):
         self.enter_credentials()
