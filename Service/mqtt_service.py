@@ -6,11 +6,13 @@ class MqttService(object):
     MQTT_HOST = "10.0.0.109"
     MQTT_USERNAME = ""
     MQTT_PASSWORD = ""
-    MQTT_TOPIC = ""
+    MQTT_TOPIC_BASE = "edwin/jarvis/control/base/set"
+    MQTT_TOPIC_FIRST_AXIS = "edwin/jarvis/control/first/axis/set"
 
     def __init__(self):
         print("init mqtt service")
         self.make_connection()
+        self.subscribe_to_topics()
 
     def make_connection(self):
         self.enter_credentials()
@@ -36,6 +38,10 @@ class MqttService(object):
         except ValueError:
             print("Wrong fucking input retard.")
 
+    def subscribe_to_topics(self):
+        self.client.subscribe(self.MQTT_TOPIC_BASE)
+        self.client.subscribe(self.MQTT_TOPIC_FIRST_AXIS)
+
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
             self.client.connected_flag = True
@@ -44,4 +50,4 @@ class MqttService(object):
             print("Bad connection Returned code= ", rc)
 
     def on_message(self, client, userdata, message):
-        print("TODO")
+        print("message received ", str(message.payload.decode("utf-8")))
