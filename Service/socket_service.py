@@ -15,19 +15,22 @@ class Socket(object):
             self.receive_socket()
 
     def receive_socket(self):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind((self.HOST, self.PORT))
-            s.listen()
-            print("listening..")
-            conn, addr = s.accept()
-            with conn:
-                print('Connected by', addr)
-                while True:
-                    data = conn.recv(1024)
-                    if not data:
-                        break
-                    print(data.decode())
-                    self.input_socket(data.decode())
+        serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        serv.bind(('0.0.0.0', self.PORT))
+        serv.listen(5)
+        while True:
+            conn, addr = serv.accept()
+            from_client = ''
+            while True:
+                data = conn.recv(4096)
+                if not data:
+                    break
+                from_client += data
+                print(from_client)
+                conn.send(b'Thanks')
+            conn.close()
+            print("client disconnected")
+            self.input_socket(from_client)
 
     def input_socket(self, input):
         value = ControlButton.FIRST_AXIS_LEFT
