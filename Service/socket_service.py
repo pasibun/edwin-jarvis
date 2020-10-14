@@ -29,7 +29,7 @@ class Socket(object):
             self.conn.send(b'Thanks for the message sir')
             self.incoming_data = data
         print("Incoming message: ", self.incoming_data)
-        self.input_socket(self.incoming_data)
+        self.input_socket(self.incoming_data.decode())
 
     def input_socket(self, input):
         value = ControlButton.FIRST_AXIS_LEFT
