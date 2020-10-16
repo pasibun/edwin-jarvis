@@ -18,6 +18,7 @@ class MqttService(object):
         self.make_connection()
         self.subscribe_to_topics()
         self.control_board.first_time_run()
+        self.client.loop_forever()  # loop_start
 
     def make_connection(self):
         self.enter_credentials()
@@ -27,7 +28,6 @@ class MqttService(object):
         self.client.username_pw_set(username=self.MQTT_USERNAME, password=self.MQTT_PASSWORD)
         self.client.connected_flag = False
         self.client.connect(self.MQTT_HOST, port=1883, keepalive=60, bind_address="")
-        self.client.loop_forever()  # loop_start
 
     def enter_credentials(self):
         try:

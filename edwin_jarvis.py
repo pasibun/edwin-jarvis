@@ -2,7 +2,7 @@ import logging
 
 import RPi.GPIO as GPIO
 
-from Service.socket_service import Socket
+from Service.mqtt_service import MqttService
 
 
 def clean_up():
@@ -17,8 +17,7 @@ if __name__ == "__main__":
         logging.info("Starting application. Saving logs in ~/logging.log")
         # GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
-        # MqttService()
-        socket = Socket()
+        MqttService()
         clean_up()
     except KeyboardInterrupt:
         clean_up()
