@@ -44,29 +44,33 @@ class MovementService(object):
         self.p1.start()
 
     def moving_to_new_step(self):
-        self.io_expander.write_digital(self.io_expander.led_pin, 1)
-        print('p1: Moving motor')
-        dir_pin = self.motor.DIR
-        step_pin = self.motor.STEP
-        GPIO.output(dir_pin, self.direction)
-        GPIO.output(self.motor.SLEEP, GPIO.HIGH)
-        count = 0
-        while self.active:
-            self.motor.new_current_step(count + 1, self.direction)
-            GPIO.output(step_pin, GPIO.HIGH)
-            sleep(self.speed)
-            GPIO.output(step_pin, GPIO.LOW)
-            sleep(self.speed)
-            count = count + 1
-            if self.first_axis_stop_switch_check(self.motor, self.pin_left, self.pin_right):
-                GPIO.output(self.motor.SLEEP, GPIO.LOW)
-                sleep(1)
-                self.active = False
-                break
-        self.io_expander.write_digital(self.io_expander.led_pin, 0)
-        print("p1: New motor step position: ", self.motor.current_step)
-        print("Terminating p1.")
-        self.p1.terminate()
+        try:
+            self.io_expander.write_digital(self.io_expander.led_pin, 1)
+            print('p1: Moving motor')
+            dir_pin = self.motor.DIR
+            step_pin = self.motor.STEP
+            GPIO.output(dir_pin, self.direction)
+            GPIO.output(self.motor.SLEEP, GPIO.HIGH)
+            count = 0
+            while self.active:
+                self.motor.new_current_step(count + 1, self.direction)
+                GPIO.output(step_pin, GPIO.HIGH)
+                sleep(self.speed)
+                GPIO.output(step_pin, GPIO.LOW)
+                sleep(self.speed)
+                count = count + 1
+                if self.first_axis_stop_switch_check(self.motor, self.pin_left, self.pin_right):
+                    GPIO.output(self.motor.SLEEP, GPIO.LOW)
+                    sleep(1)
+                    break
+            self.io_expander.write_digital(self.io_expander.led_pin, 0)
+            print("p1: New motor step position: ", self.motor.current_step)
+            self.active = False
+            self.terminate_process()
+        except Exception:
+            print("ERROR: moving_to_new_step, Er ging iets mis..")
+            self.active = False
+            self.terminate_process()
 
     def first_axis_stop_switch_check(self, motor, pin_left, pin_right):
         if pin_left != '' and GPIO.input(pin_left):
@@ -90,3 +94,8 @@ class MovementService(object):
             sleep(self.default_speed)
             GPIO.output(step_pin, GPIO.LOW)
             sleep(self.default_speed)
+
+    def terminate_process(self):
+        if self.p1 is not None:
+            print("Terminating p1.")
+            self.p1.terminate()
