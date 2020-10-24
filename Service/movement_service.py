@@ -45,7 +45,7 @@ class MovementService(object):
 
     def moving_to_new_step(self):
         self.io_expander.write_digital(self.io_expander.led_pin, 1)
-        print('Moving motor')
+        print('p1: Moving motor')
         dir_pin = self.motor.DIR
         step_pin = self.motor.STEP
         GPIO.output(dir_pin, self.direction)
@@ -64,16 +64,18 @@ class MovementService(object):
                 self.active = False
                 break
         self.io_expander.write_digital(self.io_expander.led_pin, 0)
-        print("New motor step position: ", self.motor.current_step)
+        print("p1: New motor step position: ", self.motor.current_step)
+        print("Terminating p1.")
+        self.p1.terminate()
 
     def first_axis_stop_switch_check(self, motor, pin_left, pin_right):
         if pin_left != '' and GPIO.input(pin_left):
-            print("Left stop switch has been pressed")
+            print("p1: Left stop switch has been pressed")
             self.move_motor(motor, motor.CCW)
             motor.current_step = 0
             return True
         elif pin_right != '' and GPIO.input(pin_right):
-            print("Right stop switch has been pressed")
+            print("p1: Right stop switch has been pressed")
             self.move_motor(motor, motor.CW)
             motor.current_step = motor.DEFAULT_MAX_STEP
             return True

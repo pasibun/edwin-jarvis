@@ -75,5 +75,5 @@ class MqttService(object):
         elif str(message.payload.decode("utf-8")).lower() == "done":
             self.control_board.stepper_motor = False
 
-        if str(message.payload.decode("utf-8")).lower() is not "done":
+        if str(message.payload.decode("utf-8")).lower() != "done":
             self.control_board.determine_motor_to_control(value)
