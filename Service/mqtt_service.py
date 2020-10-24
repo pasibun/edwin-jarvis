@@ -15,10 +15,11 @@ class MqttService(object):
     MQTT_TOPIC_FIRST_AXIS = "edwin/jarvis/control/first/axis/set"
 
     def __init__(self):
+        self.control_board.first_time_run()
+
         print("init mqtt service")
         self.make_connection()
         self.subscribe_to_topics()
-        self.control_board.first_time_run()
         self.client.loop_forever()  # loop_start
 
     def make_connection(self):

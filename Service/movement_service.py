@@ -20,6 +20,7 @@ class MovementService(object):
             Button(5, ButtonType.STOPS_WITCH, Position.FIRST_AXIS_RIGHT, None))
 
     def moving_to_new_step(self, motor, steps, direction, speed, pin_left, pin_right):
+        print('Moving motor ', steps, ' steps.')
         dir_pin = motor.DIR
         step_pin = motor.STEP
         GPIO.output(dir_pin, direction)

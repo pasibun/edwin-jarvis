@@ -18,6 +18,5 @@ if __name__ == "__main__":
         # GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         MqttService()
-        clean_up()
     except KeyboardInterrupt:
         clean_up()

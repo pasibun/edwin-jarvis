@@ -20,7 +20,7 @@ class ControlBoardService(object):
         stop_switch_left = motor.stop_switch_left.PIN
         stop_switch_right = motor.stop_switch_right.PIN
 
-        self.stepper_motor.moving_to_new_step(motor, 500, motor.CCW, 0.001, stop_switch_left,
+        self.stepper_motor.moving_to_new_step(motor, 500, motor.CCW, self.speed, stop_switch_left,
                                               stop_switch_right)
         self.io_expander.write_digital(self.io_expander.led_pin, 0)
 
