@@ -5,7 +5,6 @@ from Service.movement_service import MovementService
 
 class ControlBoardService(object):
     stepper_motor = MovementService()
-    io_expander = IOExpander()
 
     speed = 0.001
     first_time = True
@@ -14,14 +13,11 @@ class ControlBoardService(object):
         print("init controlBoard service")
 
     def first_time_run(self):
-        self.io_expander.write_digital(self.io_expander.led_pin, 1)
         motor = self.stepper_motor.stepper_motor_first_axis
         stop_switch_left = motor.stop_switch_left.PIN
         stop_switch_right = motor.stop_switch_right.PIN
 
-        self.stepper_motor.moving_to_new_step(motor, motor.CCW, self.speed, stop_switch_left,
-                                              stop_switch_right)
-        self.io_expander.write_digital(self.io_expander.led_pin, 0)
+        self.stepper_motor.start_process_moving(motor, motor.CCW, self.speed, stop_switch_left, stop_switch_right)
 
     def determine_motor_to_control(self, mqtt_payload):
         motor = self.stepper_motor.stepper_motor_first_axis
@@ -42,16 +38,13 @@ class ControlBoardService(object):
 
     def run_motor_with_led(self, motor, direction):
         self.stepper_motor.active = True
-        self.io_expander.write_digital(self.io_expander.led_pin, 1)
         if motor.stop_switch_left is not None:
             stop_switch_left = motor.stop_switch_left.PIN
             stop_switch_right = motor.stop_switch_right.PIN
         else:
             stop_switch_left = ''
             stop_switch_right = ''
-        self.stepper_motor.moving_to_new_step(motor, direction, self.speed, stop_switch_left,
-                                              stop_switch_right)
-        self.io_expander.write_digital(self.io_expander.led_pin, 0)
+        self.stepper_motor.start_process_moving(motor, direction, self.speed, stop_switch_left,stop_switch_right)
 
     # base_left = Button(26, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_LEFT)
     # base_right = Button(19, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_RIGHT)
