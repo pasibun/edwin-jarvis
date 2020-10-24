@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import getpass
 
 from Domain.Enum.control_buttons_enum import ControlButton
 from Service.control_board_service import ControlBoardService
@@ -34,7 +35,7 @@ class MqttService(object):
             print("Enter username for the MQTT connection:")
             self.MQTT_USERNAME = input()
             print("Enter password for the MQTT connection:")
-            self.MQTT_PASSWORD = input()
+            self.MQTT_PASSWORD = getpass.getpass()
             print("Press y to confirm.")
             result = input()
             if not result.isdigit() and result.lower() != "y":
