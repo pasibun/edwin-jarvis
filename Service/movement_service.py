@@ -1,7 +1,7 @@
 from time import sleep
 
 import RPi.GPIO as GPIO
-import thread
+import threading
 
 from Domain.Enum.button_type_enum import ButtonType
 from Domain.Enum.position_enum import Position
@@ -40,7 +40,8 @@ class MovementService(object):
         self.pin_left = pin_left
         self.pin_right = pin_right
 
-        thread.start_new_thread(self.moving_to_new_step())
+        t = threading.Thread(target=self.moving_to_new_step)
+        t.start()
 
     def moving_to_new_step(self):
         try:
