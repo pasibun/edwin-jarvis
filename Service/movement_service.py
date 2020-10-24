@@ -1,10 +1,11 @@
 from time import sleep
-import multiprocessing
-from multiprocessing import Process, Value
+
 import RPi.GPIO as GPIO
-from Domain.button import Button
+import thread
+
 from Domain.Enum.button_type_enum import ButtonType
 from Domain.Enum.position_enum import Position
+from Domain.button import Button
 from Domain.stepper_motor import StepperMotor
 from Service.mcp_driver_service import IOExpander
 
@@ -39,14 +40,12 @@ class MovementService(object):
         self.pin_left = pin_left
         self.pin_right = pin_right
 
-        self.p1 = multiprocessing.Process(target=self.moving_to_new_step)
-        self.p1.deamon = True
-        self.p1.start()
+        thread.start_new_thread(self.moving_to_new_step())
 
     def moving_to_new_step(self):
         try:
             self.io_expander.write_digital(self.io_expander.led_pin, 1)
-            print('p1: Moving motor')
+            print('Thread: Moving motor')
             dir_pin = self.motor.DIR
             step_pin = self.motor.STEP
             GPIO.output(dir_pin, self.direction)
@@ -64,22 +63,20 @@ class MovementService(object):
                     sleep(1)
                     break
             self.io_expander.write_digital(self.io_expander.led_pin, 0)
-            print("p1: New motor step position: ", self.motor.current_step)
+            print("Thread: New motor step position: ", self.motor.current_step)
             self.active = False
-            self.terminate_process()
         except Exception:
             print("ERROR: moving_to_new_step, Er ging iets mis..")
             self.active = False
-            self.terminate_process()
 
     def first_axis_stop_switch_check(self, motor, pin_left, pin_right):
         if pin_left != '' and GPIO.input(pin_left):
-            print("p1: Left stop switch has been pressed")
+            print("Thread: Left stop switch has been pressed")
             self.move_motor(motor, motor.CCW)
             motor.current_step = 0
             return True
         elif pin_right != '' and GPIO.input(pin_right):
-            print("p1: Right stop switch has been pressed")
+            print("Thread: Right stop switch has been pressed")
             self.move_motor(motor, motor.CW)
             motor.current_step = motor.DEFAULT_MAX_STEP
             return True
@@ -94,8 +91,3 @@ class MovementService(object):
             sleep(self.default_speed)
             GPIO.output(step_pin, GPIO.LOW)
             sleep(self.default_speed)
-
-    def terminate_process(self):
-        if self.p1 is not None:
-            print("Terminating p1.")
-            self.p1.terminate()
