@@ -23,7 +23,6 @@ class MovementService(object):
     pin_right = None
 
     active = False
-    p1 = None
 
     def __init__(self):
         print("init movement service")
