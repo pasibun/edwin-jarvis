@@ -7,7 +7,6 @@ class ControlBoardService(object):
     stepper_motor = MovementService()
     io_expander = IOExpander()
 
-    steps = 1
     speed = 0.001
     first_time = True
 
@@ -20,7 +19,7 @@ class ControlBoardService(object):
         stop_switch_left = motor.stop_switch_left.PIN
         stop_switch_right = motor.stop_switch_right.PIN
 
-        self.stepper_motor.moving_to_new_step(motor, 500, motor.CCW, self.speed, stop_switch_left,
+        self.stepper_motor.moving_to_new_step(motor, motor.CCW, self.speed, stop_switch_left,
                                               stop_switch_right)
         self.io_expander.write_digital(self.io_expander.led_pin, 0)
 
@@ -42,6 +41,7 @@ class ControlBoardService(object):
         self.run_motor_with_led(motor, direction)
 
     def run_motor_with_led(self, motor, direction):
+        self.stepper_motor.active = True
         self.io_expander.write_digital(self.io_expander.led_pin, 1)
         if motor.stop_switch_left is not None:
             stop_switch_left = motor.stop_switch_left.PIN
@@ -49,7 +49,7 @@ class ControlBoardService(object):
         else:
             stop_switch_left = ''
             stop_switch_right = ''
-        self.stepper_motor.moving_to_new_step(motor, self.steps, direction, self.speed, stop_switch_left,
+        self.stepper_motor.moving_to_new_step(motor, direction, self.speed, stop_switch_left,
                                               stop_switch_right)
         self.io_expander.write_digital(self.io_expander.led_pin, 0)
 

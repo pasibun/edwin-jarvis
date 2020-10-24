@@ -10,6 +10,7 @@ class MovementService(object):
     default_speed = 0.001
     stepper_motor_base = StepperMotor(16, 12, 15, (7, 8, 25), '1/4')
     stepper_motor_first_axis = StepperMotor(21, 20, 14, (24, 23, 18), '1/4')
+    active = False
 
     def __init__(self):
         print("init movement service")
@@ -19,21 +20,24 @@ class MovementService(object):
             Button(11, ButtonType.STOPS_WITCH, Position.FIRST_AXIS_LEFT, None),
             Button(5, ButtonType.STOPS_WITCH, Position.FIRST_AXIS_RIGHT, None))
 
-    def moving_to_new_step(self, motor, steps, direction, speed, pin_left, pin_right):
-        print('Moving motor ', steps, ' steps.')
+    def moving_to_new_step(self, motor, direction, speed, pin_left, pin_right):
+        print('Moving motor')
         dir_pin = motor.DIR
         step_pin = motor.STEP
         GPIO.output(dir_pin, direction)
         GPIO.output(motor.SLEEP, GPIO.HIGH)
-        for x in range(steps):
-            motor.new_current_step(x + 1, direction)
+        count = 0
+        while self.active:
+            motor.new_current_step(count + 1, direction)
             GPIO.output(step_pin, GPIO.HIGH)
             sleep(speed)
             GPIO.output(step_pin, GPIO.LOW)
             sleep(speed)
+            count = count + 1
             if self.first_axis_stop_switch_check(motor, pin_left, pin_right):
                 GPIO.output(motor.SLEEP, GPIO.LOW)
                 sleep(1)
+                self.active = False
                 break
         print("New motor step position: ", motor.current_step)
 

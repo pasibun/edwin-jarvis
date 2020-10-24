@@ -69,4 +69,8 @@ class MqttService(object):
             value = ControlButton.FIRST_AXIS_LEFT
         elif str(message.payload.decode("utf-8")).lower() == "down":
             value = ControlButton.FIRST_AXIS_RIGHT
-        self.control_board.determine_motor_to_control(value)
+        elif str(message.payload.decode("utf-8")).lower() == "Done":
+            self.control_board.stepper_motor = False
+
+        if str(message.payload.decode("utf-8")).lower() is not "Done":
+            self.control_board.determine_motor_to_control(value)
