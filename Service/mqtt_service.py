@@ -11,6 +11,7 @@ class MqttService(object):
     MQTT_HOST = "10.0.0.109"
     MQTT_USERNAME = ""
     MQTT_PASSWORD = ""
+    MQTT_TOPIC = "edwin/jarvis/set"
     MQTT_TOPIC_BASE = "edwin/jarvis/control/base/set"
     MQTT_TOPIC_FIRST_AXIS = "edwin/jarvis/control/first/axis/set"
 
@@ -50,6 +51,8 @@ class MqttService(object):
         self.client.subscribe(self.MQTT_TOPIC_BASE)
         print("Subscribing to topic: ", self.MQTT_TOPIC_FIRST_AXIS)
         self.client.subscribe(self.MQTT_TOPIC_FIRST_AXIS)
+        print("Subscribing to topic: ", self.MQTT_TOPIC)
+        self.client.subscribe(self.MQTT_TOPIC)
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
@@ -69,8 +72,8 @@ class MqttService(object):
             value = ControlButton.FIRST_AXIS_LEFT
         elif str(message.payload.decode("utf-8")).lower() == "down":
             value = ControlButton.FIRST_AXIS_RIGHT
-        elif str(message.payload.decode("utf-8")).lower() == "Done":
+        elif str(message.payload.decode("utf-8")).lower() == "done":
             self.control_board.stepper_motor = False
 
-        if str(message.payload.decode("utf-8")).lower() is not "Done":
+        if str(message.payload.decode("utf-8")).lower() is not "done":
             self.control_board.determine_motor_to_control(value)
