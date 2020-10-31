@@ -82,10 +82,11 @@ class MovementService(object):
             return True
 
     def move_motor_ten_steps(self, motor, direction):
+        sleep(0.5)
         dir_pin = motor.DIR
         step_pin = motor.STEP
         GPIO.output(dir_pin, direction)
-        for x in range(10):
+        for x in range(25):
             motor.new_current_step(x, direction)
             GPIO.output(step_pin, GPIO.HIGH)
             sleep(self.default_speed)
