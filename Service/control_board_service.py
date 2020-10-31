@@ -1,5 +1,4 @@
 from Domain.Enum.control_buttons_enum import ControlButton
-from Service.mcp_driver_service import IOExpander
 from Service.movement_service import MovementService
 
 
@@ -17,6 +16,7 @@ class ControlBoardService(object):
         stop_switch_left = motor.stop_switch_left.PIN
         stop_switch_right = motor.stop_switch_right.PIN
 
+        self.stepper_motor.active = True
         self.stepper_motor.start_process_moving(motor, motor.CCW, self.speed, stop_switch_left, stop_switch_right)
 
     def determine_motor_to_control(self, mqtt_payload):
@@ -44,7 +44,7 @@ class ControlBoardService(object):
         else:
             stop_switch_left = ''
             stop_switch_right = ''
-        self.stepper_motor.start_process_moving(motor, direction, self.speed, stop_switch_left,stop_switch_right)
+        self.stepper_motor.start_process_moving(motor, direction, self.speed, stop_switch_left, stop_switch_right)
 
     # base_left = Button(26, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_LEFT)
     # base_right = Button(19, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_RIGHT)

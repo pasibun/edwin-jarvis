@@ -39,10 +39,10 @@ class MovementService(object):
         self.pin_left = pin_left
         self.pin_right = pin_right
 
-        t = threading.Thread(target=self.moving_to_new_step)
+        t = threading.Thread(target=self.moving_motor)
         t.start()
 
-    def moving_to_new_step(self):
+    def moving_motor(self):
         try:
             self.io_expander.write_digital(self.io_expander.led_pin, 1)
             print('Thread: Moving motor')
@@ -72,16 +72,16 @@ class MovementService(object):
     def first_axis_stop_switch_check(self, motor, pin_left, pin_right):
         if pin_left != '' and GPIO.input(pin_left):
             print("Thread: Left stop switch has been pressed")
-            self.move_motor(motor, motor.CCW)
+            self.move_motor_ten_steps(motor, motor.CCW)
             motor.current_step = 0
             return True
         elif pin_right != '' and GPIO.input(pin_right):
             print("Thread: Right stop switch has been pressed")
-            self.move_motor(motor, motor.CW)
+            self.move_motor_ten_steps(motor, motor.CW)
             motor.current_step = motor.DEFAULT_MAX_STEP
             return True
 
-    def move_motor(self, motor, direction):
+    def move_motor_ten_steps(self, motor, direction):
         dir_pin = motor.DIR
         step_pin = motor.STEP
         GPIO.output(dir_pin, direction)
