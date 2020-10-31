@@ -1,5 +1,6 @@
 from Domain.Enum.control_buttons_enum import ControlButton
 from Service.movement_service import MovementService
+from time import sleep
 
 
 class ControlBoardService(object):
@@ -15,7 +16,7 @@ class ControlBoardService(object):
         motor = self.stepper_motor.stepper_motor_first_axis
         stop_switch_left = motor.stop_switch_left.PIN
         stop_switch_right = motor.stop_switch_right.PIN
-
+        sleep(2)
         self.stepper_motor.active = True
         self.stepper_motor.start_process_moving(motor, motor.CCW, self.speed, stop_switch_left, stop_switch_right)
 
