@@ -6,7 +6,7 @@ from time import sleep
 class ControlBoardService(object):
     stepper_motor = MovementService()
 
-    speed = 0.001
+    speed = 0.003
     first_time = True
 
     def __init__(self):
@@ -42,9 +42,11 @@ class ControlBoardService(object):
         if motor.stop_switch_left is not None:
             stop_switch_left = motor.stop_switch_left.PIN
             stop_switch_right = motor.stop_switch_right.PIN
+            self.speed = 0.003
         else:
             stop_switch_left = ''
             stop_switch_right = ''
+            self.speed = 0.001
         self.stepper_motor.start_process_moving(motor, direction, self.speed, stop_switch_left, stop_switch_right)
 
     # base_left = Button(26, ButtonType.CONTROL_BUTTON, Position.CONTROL_BOARD, ControlButton.BASE_LEFT)
