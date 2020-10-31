@@ -39,9 +39,6 @@ class MovementService(object):
         self.pin_left = pin_left
         self.pin_right = pin_right
 
-        print(print(GPIO.input(pin_left)))
-        print(print(GPIO.input(pin_right)))
-
         t = threading.Thread(target=self.moving_motor)
         t.start()
 
