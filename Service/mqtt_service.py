@@ -1,5 +1,5 @@
-import paho.mqtt.client as mqtt
 import getpass
+import paho.mqtt.client as mqtt
 
 from Domain.Enum.control_buttons_enum import ControlButton
 from Service.control_board_service import ControlBoardService
@@ -12,8 +12,8 @@ class MqttService(object):
     MQTT_USERNAME = ""
     MQTT_PASSWORD = ""
     MQTT_TOPIC = "edwin/jarvis/set"
-    MQTT_TOPIC_BASE = "edwin/jarvis/control/base/set"
-    MQTT_TOPIC_FIRST_AXIS = "edwin/jarvis/control/first/axis/set"
+    MQTT_TOPIC_MOVEMENT = "edwin/jarvis/robotarm/movement/set"
+    MQTT_TOPIC_METHOD = "edwin/jarvis/robotarm/movement/methode/set"
 
     def __init__(self):
         self.control_board.first_time_run()
@@ -49,10 +49,10 @@ class MqttService(object):
     def subscribe_to_topics(self):
         print("Subscribing to topic: ", self.MQTT_TOPIC_BASE)
         self.client.subscribe(self.MQTT_TOPIC_BASE)
-        print("Subscribing to topic: ", self.MQTT_TOPIC_FIRST_AXIS)
-        self.client.subscribe(self.MQTT_TOPIC_FIRST_AXIS)
-        print("Subscribing to topic: ", self.MQTT_TOPIC)
-        self.client.subscribe(self.MQTT_TOPIC)
+        print("Subscribing to topic: ", self.MQTT_TOPIC_MOVEMENT)
+        self.client.subscribe(self.MQTT_TOPIC_MOVEMENT)
+        print("Subscribing to topic: ", self.MQTT_TOPIC_METHOD)
+        self.client.subscribe(self.MQTT_TOPIC_METHOD)
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
